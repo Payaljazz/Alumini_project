@@ -1,29 +1,31 @@
-
 import mongoose from "mongoose";
 import { faker } from "@faker-js/faker";
 import User from "./models/User.js";
 
 mongoose.connect("mongodb://127.0.0.1:27017/alumniDB");
 
-const seedTestUsers = async () => {
+const seedUsers = async () => {
   try {
+    // Remove old users (optional for testing)
     await User.deleteMany();
 
-    for (let i = 0; i < 10; i++) {
+    const TOTAL_USERS = 200;
+
+    for (let i = 0; i < TOTAL_USERS; i++) {
       await User.create({
         name: faker.person.fullName(),
         email: faker.internet.email(),
         password: "password123",
-        role: i < 5 ? "ALUMNI" : "STUDENT",
-        isVerified: true
+        role: i < 100 ? "alumni" : "student",  // first 100 alumni, rest students
+        contact: faker.phone.number('##########')
       });
     }
 
-    console.log("✅ 10 users inserted successfully");
+    console.log(`✅ STEP 3 DONE: ${TOTAL_USERS} users inserted`);
     mongoose.disconnect();
-  } catch (err) {
-    console.error(err);
+  } catch (error) {
+    console.error("❌ STEP 3 ERROR:", error);
   }
 };
 
-seedTestUsers();
+seedUsers();
