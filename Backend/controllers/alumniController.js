@@ -1,28 +1,27 @@
-import Alumni from "../models/Alumni.js";
-
-export const createAlumniProfile = async (req, res) => {
-  try {
-    const alumni = await Alumni.create(req.body);
-    res.status(201).json({ message: "Alumni profile created", alumni });
-  } catch (err) {
-    res.status(500).json({ message: err.message });
-  }
-};
+import AlumniProfile from "../models/AlumniProfile.js";
 
 export const getAllAlumni = async (req, res) => {
   try {
-    const alumni = await Alumni.find().populate("user");
-    res.json(alumni);
-  } catch (err) {
-    res.status(500).json({ message: err.message });
-  }
-};
+    const filters = {};
 
-export const updateAlumniProfile = async (req, res) => {
-  try {
-    const alumni = await Alumni.findByIdAndUpdate(req.params.id, req.body, { new: true });
-    res.json({ message: "Alumni profile updated", alumni });
-  } catch (err) {
-    res.status(500).json({ message: err.message });
+    if (req.query.branch) filters.branch = req.query.branch;
+    if (req.query.graduationYear)
+      filters.graduationYear = Number(req.query.graduationYear);
+
+    const alumni = await AlumniProfile.find(filters)
+      .populate("user", "name email contact")
+      .sort({ graduationYear: -1 });
+
+    res.status(200).json({
+      success: true,
+      count: alumni.length,
+      data: alumni
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: "Failed to fetch alumni",
+      error: error.message
+    });
   }
 };
