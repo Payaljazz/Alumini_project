@@ -64,10 +64,10 @@ function AdminDashboard() {
           <h2 className="text-2xl font-semibold text-blue-600 mb-4">Recent Activities</h2>
 
           <ul className="text-gray-700">
-            <li className="border-b py-3">✅ New Alumni Registered</li>
-            <li className="border-b py-3">📢 New Event Scheduled</li>
-            <li className="border-b py-3">💼 New Job Added</li>
-            <li className="py-3">📊 Report Generated</li>
+            <li className="border-b py-3"> New Alumni Registered</li>
+            <li className="border-b py-3"> New Event Scheduled</li>
+            <li className="border-b py-3"> New Job Added</li>
+            <li className="py-3"> Report Generated</li>
           </ul>
         </div>
 

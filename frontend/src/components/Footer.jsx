@@ -25,9 +25,9 @@ function Footer() {
         <div>
           <h2 className="text-lg font-semibold text-gray-700 mb-3">Connect</h2>
           <ul className="flex flex-col gap-2 text-sm text-gray-600">
-            <li>Email: support@alumnihub.com</li>
-            <li>Phone: +91 98765 43210</li>
-            <li>Location: Your Institution Name</li>
+            <li>Email: latakumarisingh5574@gmail.com</li>
+            <li>Phone: +91 9608301824</li>
+            <li>Location: GL Bajaj Institute of Technology and Management</li>
           </ul>
         </div>
 
