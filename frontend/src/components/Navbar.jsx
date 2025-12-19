@@ -1,65 +1,125 @@
-import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, NavLink, useNavigate } from "react-router-dom";
+import { useAuth } from "../context/AuthContext";
 
 function Navbar() {
-  const [open, setOpen] = useState(false);
+  const { user, logout } = useAuth();
+  const navigate = useNavigate();
+
+  const handleLogout = () => {
+    logout();
+    navigate("/login");
+  };
 
   return (
-    <nav className="w-full bg-white shadow-md fixed top-0 left-0 z-50">
-      <div className="max-w-7xl mx-auto flex items-center justify-between py-3 px-6">
+    <nav className="fixed top-0 left-0 w-full bg-white shadow-sm z-50">
+      <div className="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
 
-        <div className="flex items-center gap-2">
-          <img src="/logo_alumini.png" alt="Logo" className="h-10 w-10 object-cover" />
-          <h1 className="text-xl font-semibold text-blue-600 tracking-wide">
-            Alumni Connect
+        {/* LOGO */}
+        <Link to="/" className="flex items-center gap-2">
+          <span className="text-3xl">🎓</span>
+          <h1 className="text-2xl font-extrabold text-indigo-600">
+            Alumni <span className="text-yellow-400">Connect</span>
           </h1>
+        </Link>
+
+        {/* NAV LINKS */}
+        <div className="hidden md:flex items-center gap-8">
+          <NavLink
+            to="/"
+            className={({ isActive }) =>
+              isActive
+                ? "text-indigo-600 font-semibold"
+                : "text-gray-600 hover:text-indigo-600"
+            }
+          >
+            Home
+          </NavLink>
+
+          <NavLink
+            to="/alumni"
+            className={({ isActive }) =>
+              isActive
+                ? "text-indigo-600 font-semibold"
+                : "text-gray-600 hover:text-indigo-600"
+            }
+          >
+            Alumni
+          </NavLink>
+
+          <NavLink
+            to="/events"
+            className={({ isActive }) =>
+              isActive
+                ? "text-indigo-600 font-semibold"
+                : "text-gray-600 hover:text-indigo-600"
+            }
+          >
+            Events
+          </NavLink>
+
+          <NavLink
+            to="/jobs"
+            className={({ isActive }) =>
+              isActive
+                ? "text-indigo-600 font-semibold"
+                : "text-gray-600 hover:text-indigo-600"
+            }
+          >
+            Jobs
+          </NavLink>
+
+          {/* 🎓 STUDENT DASHBOARD */}
+          {user?.role === "student" && (
+            <NavLink
+              to="/student/dashboard"
+              className={({ isActive }) =>
+                isActive
+                  ? "text-indigo-600 font-semibold"
+                  : "text-gray-600 hover:text-indigo-600"
+              }
+            >
+              Dashboard
+            </NavLink>
+          )}
+
+          {/* 🔥 ADMIN */}
+          {user?.role === "admin" && (
+            <NavLink
+              to="/admin"
+              className={({ isActive }) =>
+                isActive
+                  ? "text-red-600 font-semibold"
+                  : "text-gray-600 hover:text-red-600"
+              }
+            >
+              Admin
+            </NavLink>
+          )}
         </div>
 
-        <ul className="hidden md:flex items-center gap-8 text-gray-700 text-[16px]">
-          <li><Link to="/" className="hover:text-blue-600">Home</Link></li>
-          <li><Link to="/alumni" className="hover:text-blue-600">Alumni</Link></li>
-          <li><Link to="/events" className="hover:text-blue-600">Events</Link></li>
-          <li><Link to="/jobs" className="hover:text-blue-600">Jobs</Link></li>
-        </ul>
-
-        <div className="hidden md:flex gap-4">
-          <Link
-            to="/login"
-            className="px-4 py-2 border border-blue-600 text-blue-600 rounded-md hover:bg-blue-600 hover:text-white transition"
-          >
-            Login
-          </Link>
-
-          <Link
-            to="/signup"
-            className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition"
-          >
-            Signup
-          </Link>
+        {/* AUTH BUTTON */}
+        <div className="flex items-center gap-3">
+          {user ? (
+            <button
+              onClick={handleLogout}
+              className="px-4 py-2 border border-indigo-600 text-indigo-600 rounded-md hover:bg-indigo-50 transition"
+            >
+              Logout
+            </button>
+          ) : (
+            <Link
+              to="/login"
+              className="px-4 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700 transition"
+            >
+              Login
+            </Link>
+          )}
         </div>
 
-        <button
-          className="md:hidden text-gray-700 text-2xl"
-          onClick={() => setOpen(!open)}
-        >
-          ☰
-        </button>
       </div>
-
-      {open && (
-        <div className="md:hidden bg-white shadow-md px-6 py-4">
-          <ul className="flex flex-col gap-4 text-gray-700 text-lg">
-            <li><Link to="/" onClick={() => setOpen(false)}>Home</Link></li>
-            <li><Link to="/alumni" onClick={() => setOpen(false)}>Alumni</Link></li>
-            <li><Link to="/events" onClick={() => setOpen(false)}>Events</Link></li>
-            <li><Link to="/jobs" onClick={() => setOpen(false)}>Jobs</Link></li>
-            <li><Link to="/login" onClick={() => setOpen(false)}>Login</Link></li>
-            <li><Link to="/signup" onClick={() => setOpen(false)}>Signup</Link></li>
-          </ul>
-        </div>
-      )}
     </nav>
   );
 }
 
 export default Navbar;
+
